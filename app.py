@@ -43,6 +43,14 @@ def load_scenario():
     st.session_state["mode_label"] = POND_LABEL if preset.get("mode") == "pond" else HOME_LABEL
 
 
+# A link such as  ...?demo=Old neglected tank  opens straight into that demo case (once)
+_demo = st.query_params.get("demo")
+if _demo in SCENARIOS and not st.session_state.get("_demo_applied"):
+    st.session_state["scenario"] = _demo
+    load_scenario()
+    st.session_state["_demo_applied"] = True
+
+
 def title_cf(name, cf):
     return f"{CONCLUSIONS[name]['title']} ({cf:.0%})"
 
@@ -225,9 +233,12 @@ with tab_whatif:
     status_after, _ = verdict(after, CONCLUSIONS, symptoms_present)
 
     b1, b2 = st.columns(2)
-    b1.metric("Decision now", f"{VERDICTS[status][0]} {status}", f"{len(shown)} conclusions", delta_color="off")
+    change = len(after) - len(shown)
+    b1.metric("Decision now", f"{VERDICTS[status][0]} {status}")
+    b1.caption(f"{len(shown)} conclusions")
     b2.metric("Decision after these actions", f"{VERDICTS[status_after][0]} {status_after}",
-              f"{len(after) - len(shown):+d} conclusions", delta_color="inverse")
+              f"{change:+d} conclusions" if change else None, delta_color="inverse")
+    b2.caption(f"{len(after)} conclusions")
     if not changes:
         st.info("Choose one or more actions above to see their effect.")
     else:
