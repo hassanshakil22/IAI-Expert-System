@@ -5,6 +5,9 @@ fish diseases through **inferencing**, **makes decisions** (verdict, isolate / s
 water first, differential diagnosis) and **supports** the keeper with a prioritised action plan
 and what-if analysis.
 
+**Live app:** https://aqua-doc.streamlit.app/
+**Author:** Hassan Shakil (CT-24185) - Introduction to Artificial Intelligence (IAI) CCP
+
 ## Files
 | File | Purpose |
 |---|---|
